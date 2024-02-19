@@ -529,7 +529,7 @@ class WritebackEntry(edge: TLEdgeOut)(implicit p: Parameters) extends DCacheModu
     data := io.req_data.data
   }
 
-  assert(!RegNext(!s_data_merge && !s_data_override))
+  assert(!(!s_data_merge && !s_data_override))
 
   // performance counters
   XSPerfAccumulate("wb_req", io.req.fire)

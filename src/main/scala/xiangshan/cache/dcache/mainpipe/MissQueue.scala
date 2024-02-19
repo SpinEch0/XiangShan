@@ -680,7 +680,7 @@ class MissEntry(edge: TLEdgeOut)(implicit p: Parameters) extends DCacheModule
   io.repl_way_en := req.way_en
 
   // should not allocate, merge or reject at the same time
-  assert(RegNext(PopCount(Seq(io.primary_ready, io.secondary_ready, io.secondary_reject)) <= 1.U))
+  assert(PopCount(Seq(io.primary_ready, io.secondary_ready, io.secondary_reject)) <= 1.U)
 
   val refill_data_splited = WireInit(VecInit(Seq.tabulate(cfg.blockBytes * 8 / l1BusDataWidth)(i => {
     val data = refill_and_store_data.asUInt
@@ -1007,7 +1007,7 @@ class MissQueue(edge: TLEdgeOut)(implicit p: Parameters) extends DCacheModule
     io.forward(i).forwardData := forwardData
   })
 
-  assert(RegNext(PopCount(secondary_ready_vec) <= 1.U))
+  assert(PopCount(secondary_ready_vec) <= 1.U)
 //  assert(RegNext(PopCount(secondary_reject_vec) <= 1.U))
   // It is possible that one mshr wants to merge a req, while another mshr wants to reject it.
   // That is, a coming req has the same paddr as that of mshr_0 (merge),
