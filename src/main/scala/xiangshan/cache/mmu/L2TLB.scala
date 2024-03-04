@@ -84,10 +84,10 @@ class L2TLBImp(outer: L2TLB)(implicit p: Parameters) extends PtwModule(outer) wi
   val priv   = csr_dup(0).priv
   val flush  = sfence_dup(0).valid || satp.changed
 
-  val pmp = Module(new PMP())
-  val pmp_check = VecInit(Seq.fill(2)(Module(new PMPChecker(lgMaxSize = 3, sameCycle = true)).io))
-  pmp.io.distribute_csr := io.csr.distribute_csr
-  pmp_check.foreach(_.check_env.apply(ModeS, pmp.io.pmp, pmp.io.pma))
+  // val pmp = Module(new PMP())
+  // val pmp_check = VecInit(Seq.fill(2)(Module(new PMPChecker(lgMaxSize = 3, sameCycle = true)).io))
+  // pmp.io.distribute_csr := io.csr.distribute_csr
+  // pmp_check.foreach(_.check_env.apply(ModeS, pmp.io.pmp, pmp.io.pma))
 
   val missQueue = Module(new L2TlbMissQueue)
   val cache = Module(new PtwCache)
@@ -336,10 +336,12 @@ class L2TLBImp(outer: L2TLB)(implicit p: Parameters) extends PtwModule(outer) wi
   }
 
   // pmp
-  pmp_check(0).req <> ptw.io.pmp.req
-  ptw.io.pmp.resp <> pmp_check(0).resp
-  pmp_check(1).req <> llptw.io.pmp.req
-  llptw.io.pmp.resp <> pmp_check(1).resp
+  // pmp_check(0).req <> ptw.io.pmp.req
+  // ptw.io.pmp.resp <> pmp_check(0).resp
+  // pmp_check(1).req <> llptw.io.pmp.req
+  // llptw.io.pmp.resp <> pmp_check(1).resp
+  ptw.io.pmp.resp := 0.U.asTypeOf(ptw.io.pmp.resp)
+  llptw.io.pmp.resp := 0.U.asTypeOf(ptw.io.pmp.resp)
 
   llptw_out.ready := outReady(llptw_out.bits.req_info.source, outArbMqPort)
 
