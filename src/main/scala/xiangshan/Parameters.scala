@@ -492,7 +492,7 @@ trait HasXSParameter {
   val LRSCBackOff = 8
 
   // cache hierarchy configurations
-  val l1BusDataWidth = 256
+  val l1BusDataWidth = 512
 
   // load violation predict
   val ResetTimeMax2Pow = 20 //1078576

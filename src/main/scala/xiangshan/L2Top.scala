@@ -173,8 +173,12 @@ class ZJL2Top()(implicit p: Parameters) extends LazyModule
     (buffers, node)
   }
   // =========== Components ============
-  val l1_xbar = TLXbar()
-  val mmio_xbar = TLXbar()
+  val l1_xbar_m = LazyModule(new TLXbar())
+  l1_xbar_m.suggestName("l1xbar")
+  val l1_xbar = l1_xbar_m.node
+  val mmio_xbar_m = LazyModule(new TLXbar())
+  val mmio_xbar = mmio_xbar_m.node
+  mmio_xbar_m.suggestName("mmioxbar")
   val mmio_port = TLIdentityNode() // to L3
   val memory_port = TLIdentityNode()
 
